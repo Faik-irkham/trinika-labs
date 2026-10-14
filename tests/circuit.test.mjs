@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { analyzeCircuit } from "../.test-build/domain/circuit.js";
-import { createProject, endpointKey } from "../.test-build/domain/project.js";
-import { connectWire } from "../.test-build/application/connect-wire.js";
+import { analyzeCircuit } from "../.test-build/core/domain/circuit.js";
+import { createProject, endpointKey } from "../.test-build/core/domain/project.js";
+import { connectWire } from "../.test-build/core/application/connect-wire.js";
 
 // Synthetic fixtures exercise topology without claiming support for a real MCU.
 const definition = {

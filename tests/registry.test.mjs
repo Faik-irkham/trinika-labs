@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createRegistry } from "../.test-build/domain/registry.js";
+import { createRegistry } from "../.test-build/core/domain/registry.js";
 
 const entry = (id = "test:board", version = "1.0.0", kind = "board") => ({
   definition: {

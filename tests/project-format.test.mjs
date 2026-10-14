@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createProject } from "../.test-build/domain/project.js";
-import { createRegistry } from "../.test-build/domain/registry.js";
-import { MAX_PROJECT_JSON_LENGTH, parseProjectJson, serializeProjectJson } from "../.test-build/project-format/project-json.js";
+import { createProject } from "../.test-build/core/domain/project.js";
+import { createRegistry } from "../.test-build/core/domain/registry.js";
+import { MAX_PROJECT_JSON_LENGTH, parseProjectJson, serializeProjectJson } from "../.test-build/core/project-format/project-json.js";
 
 const board = {
   reference: { id: "test:board", version: "1.0.0" }, kind: "board", label: "Synthetic board",

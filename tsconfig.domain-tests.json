@@ -5,11 +5,11 @@
     "moduleResolution": "Node",
     "strict": true,
     "skipLibCheck": true,
-    "rootDir": "src/core",
+    "rootDir": "src",
     "outDir": ".test-build",
     "types": [],
     "lib": ["ES2020"],
     "noEmitOnError": true
   },
-  "include": ["src/core/**/*.ts"]
+  "include": ["src/core/**/*.ts", "src/features/workspace/viewmodels/workspace-controller.ts", "src/features/workspace/viewmodels/projection.ts"]
 }

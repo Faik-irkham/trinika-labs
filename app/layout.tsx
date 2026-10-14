@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./workspace-accessibility.css";
 
 export const metadata: Metadata = {
-  title: "Trinika Labs — Workspace IoT",
+  title: "Trinika Labs: Workspace IoT",
   description: "Belajar merangkai IoT melalui workspace modular, katalog komponen, dan format proyek terbuka.",
 };
 

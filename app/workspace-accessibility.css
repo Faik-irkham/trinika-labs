@@ -1,0 +1,165 @@
+:root {
+  --text-muted: #52624d;
+  --text-subtle: #586950;
+  --control-edge: #7b8b73;
+  --focus-color: #326342;
+}
+
+.project-parts {
+  margin-top: 23px;
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+}
+
+.project-parts h3 {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 11px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.project-parts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.project-parts button {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 8px;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  text-align: left;
+  font-size: 12px;
+}
+
+.project-parts button.active,
+.project-parts button:hover { background: #eff5e8; color: #36522d; }
+.project-parts button > span:nth-child(2) { overflow-wrap: anywhere; }
+.project-parts code { margin-left: auto; color: var(--text-subtle); font-size: 11px; }
+.project-parts h3 span { font-family: monospace; }
+.instance-marker { width: 6px; height: 6px; border: 1px solid var(--control-edge); border-radius: 2px; flex-shrink: 0; }
+.guide-panel ol { list-style-type: decimal; }
+
+:is(.eyebrow, .local-indicator, .open-source-label, .preview-badge,
+  .count-badge, .catalog-note, .catalog-note strong, .category-tabs button,
+  .search-field, .add-part, .canvas-corner, .canvas-corner-detail,
+  .canvas-help, .zoom-controls button, .structural-badge,
+  .connection-list button, .connection-list p, .empty-message,
+  .instance-code, .part-description, .inspector-tabs button,
+  .inspector-empty p, .text-button, .lab-note p, .field > span,
+  .support-row, .support-row > span:first-child, .definition-code,
+  .guide-panel, .status-bar, .status-details, .status-experimental) {
+  color: var(--text-muted);
+}
+.project-heading p,
+.catalog-card-info > span,
+.pin-list button > span:last-child,
+.property-section h3 span { color: var(--text-muted); }
+.search-field input::placeholder { color: var(--text-muted); opacity: 1; }
+.field input, .field select { color: #35452e; border-color: var(--control-edge); }
+.search-field { border-color: var(--control-edge); }
+.field input, .field select, .search-field input { min-height: 44px; font-size: 13px; }
+.project-heading .field input { color: #24302b; font-size: 17px; border-color: transparent; }
+.project-heading .field input:hover { border-bottom-color: var(--control-edge); }
+.catalog-card-info strong { font-size: 13px; }
+.catalog-card-info > span { font-size: 11px; line-height: 1.5; }
+.catalog-card { border-color: var(--control-edge); }
+.category-tabs button { flex: 1; padding-inline: 6px; }
+.catalog-note p, .part-description, .inspector-empty p,
+.lab-note p, .guide-panel p, .guide-panel li p { font-size: 12px; }
+.eyebrow, .preview-badge, .open-source-label { font-size: 10px; letter-spacing: .5px; }
+.view-switch > span { color: var(--text-muted); font-size: 11px; }
+.editor-tabs button, .editor-tabs button.active { color: #3a5430; }
+.view-switch .active, .category-tabs button.active { color: #3a5430; }
+.support-note, .experimental-badge { color: #746128; }
+.delete-button { color: #8b4a35; border-color: #a17361; }
+.status-message.success { color: #3e6532; }
+.status-message.error { color: #9c4133; }
+.support-row { font-size: 11px; line-height: 1.5; }
+.pin-list button { font-size: 12px; border-color: var(--control-edge); }
+.pin-list button > span:last-child { font-size: 11px; }
+.part-label { fill: #40533b; font-size: 13px; }
+.part-id { fill: #52624d; font-size: 11px; }
+.code-file, .editor-footer { color: #bdcfb3; }
+.line-numbers { color: #a5bb98; }
+.file-tabs button { color: #b3c8a6; }
+
+.tool-button, .primary-button, .zoom-controls button, .rail-button,
+.category-tabs button, .editor-tabs button, .inspector-tabs button,
+.pin-list button, .text-button, .delete-button, .file-tabs button,
+.connection-list button { min-width: 44px; min-height: 44px; }
+.icon-only { width: 44px; }
+.zoom-controls { gap: 3px; }
+.zoom-controls .zoom-value { font-size: 11px; }
+.category-tabs { flex-wrap: wrap; gap: 5px; }
+.workspace-tabs, .inspector-tabs { min-height: 57px; height: auto; }
+.connection-list { gap: 8px; }
+.connection-list button { font-size: 11px; flex-wrap: wrap; text-align: left; }
+.connection-list button span { overflow-wrap: anywhere; }
+.canvas-help { font-size: 11px; line-height: 1.6; }
+.status-bar { font-size: 11px; }
+.status-details { flex-wrap: wrap; }
+.canvas-corner { font-size: 10px; letter-spacing: .5px; }
+.guide-panel li { font-size: 13px; }
+.field > span { font-size: 12px; }
+.save-dot { background: #3e6532; }
+.save-dot.unsaved { background: #896123; }
+.connection-dot { background: #507443; }
+.count-badge { font-size: 12px; }
+
+:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 3px; }
+.wire-path:focus-visible .wire-visible { stroke: var(--focus-color); stroke-width: 5; }
+.part-body:focus-visible .part-selection { stroke: var(--focus-color); stroke-width: 3; }
+.terminal:focus-visible { stroke: var(--focus-color); stroke-width: 4; }
+
+@media (max-width: 1150px) {
+  .project-actions { flex-wrap: wrap; }
+  .canvas-help { bottom: 76px; max-width: calc(100% - 36px); flex-wrap: wrap; }
+  .catalog-card-info strong { font-size: 12px; }
+  .catalog-card-info > span { font-size: 11px; }
+}
+
+@media (min-width: 651px) and (max-width: 950px) {
+  .catalog-panel { max-height: 760px; }
+}
+
+@media (max-width: 650px) {
+  .app-rail { width: 52px; flex-basis: 52px; }
+  .project-heading { width: 100%; }
+  .project-heading > div:last-child { flex: 1; min-width: 0; }
+  .project-heading .field input { width: 100%; font-size: 16px; }
+  .project-heading p { flex-wrap: wrap; font-size: 11px; }
+  .project-actions { justify-content: flex-start; gap: 5px; }
+  .project-actions .tool-button > span, .primary-button { font-size: 12px; }
+  .catalog-panel { padding: 16px; }
+  .catalog-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
+  .catalog-card { width: 100%; min-width: 0; flex-wrap: wrap; padding: 10px; }
+  .catalog-thumbnail { width: 35px; height: 40px; }
+  .catalog-card-info { min-width: 60px; }
+  .add-part { margin-left: auto; }
+  .project-parts { margin-top: 17px; padding-top: 13px; }
+  .project-parts > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 240px; }
+  .project-parts code { width: 100%; margin-left: 14px; }
+  .workspace-tabs { flex-wrap: wrap; padding: 0 12px; gap: 5px; }
+  .editor-tabs { min-height: 55px; gap: 15px; }
+  .editor-tabs button { font-size: 12px; }
+  .view-switch > span { padding: 6px; }
+  .canvas-help { left: 14px; bottom: 75px; font-size: 11px; }
+  .connection-header { align-items: flex-start; flex-wrap: wrap; gap: 6px; }
+  .connection-panel { max-height: 230px; }
+  .status-bar { display: block; padding: 12px 16px; }
+  .status-details { font-size: 11px; margin-top: 8px; }
+  .app-header { height: auto; min-height: 60px; gap: 8px; flex-wrap: wrap; padding: 12px 14px; }
+  .local-indicator { font-size: 11px; }
+  .editor-footer { flex-wrap: wrap; gap: 8px; font-size: 11px; }
+}

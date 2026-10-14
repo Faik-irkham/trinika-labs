@@ -44,6 +44,7 @@ export default function Workspace() {
   const [tab, setTab] = useState<"circuit" | "code">("circuit");
   const [fileIndex, setFileIndex] = useState(0);
   const [inspectorTab, setInspectorTab] = useState<"properties" | "guide">("properties");
+  const [isImporting, setIsImporting] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
   const project = snapshot.project;
   const selected = snapshot.selection?.kind === "instance" ? project.circuit.instances.find((instance) => instance.id === snapshot.selection!.id) : undefined;
@@ -65,13 +66,33 @@ export default function Workspace() {
   return <div className="lab-shell" id="workspace">
     <aside className="app-rail"><a href="#workspace" className="brand-mark" aria-label="Trinika Labs">t<span>.</span></a><a href="#workspace" className="rail-button active" aria-label="Workspace"><Icon name="grid" size={21} /></a><button className={`rail-button ${inspectorTab === "guide" ? "active" : ""}`} aria-label="Buka panduan belajar" onClick={() => setInspectorTab("guide")}><Icon name="book" size={21} /></button><div className="rail-bottom"><span className="rail-version">v0.1</span><span className="avatar">TL</span></div></aside>
     <div className="lab-content">
-      <header className="app-header"><div className="product-name">trinika<span>labs</span><span className="preview-badge">DEVELOPMENT PREVIEW</span></div><div className="header-right"><span className="local-indicator"><span className="live-dot" /> Lokal di browser</span><span className="open-source-label">OPEN SOURCE</span></div></header>
-      <div className="project-toolbar"><div className="project-heading"><div className="project-icon"><Icon name="layers" size={20} /></div><div><EditableField key={`${project.id}-${project.revision}-title`} label="Nama proyek" value={project.title} onCommit={controller.rename} onDraft={controller.markDraft} onFinish={controller.finishDraft} /><p><span className={`save-dot ${snapshot.dirty ? "unsaved" : ""}`} />{snapshot.dirty ? "Perubahan belum disimpan" : "Tersimpan di browser"}<span className="toolbar-separator">/</span>Wiring dasar</p></div></div><div className="project-actions"><button className="tool-button icon-only" aria-label="Undo" disabled={!snapshot.undoCount} onClick={controller.undo}><Icon name="undo" /></button><button className="tool-button icon-only" aria-label="Redo" disabled={!snapshot.redoCount} onClick={controller.redo}><Icon name="redo" /></button><span className="action-divider" /><button className="tool-button" onClick={() => fileInput.current?.click()}><Icon name="folder" /><span>Buka</span></button><button className="tool-button" onClick={exportProject}><Icon name="download" /><span>Ekspor</span></button><button className="primary-button" onClick={() => controller.saveLocal(browserProjectStore)}><Icon name="save" /><span>Simpan lokal</span></button></div></div>
+      <header className="app-header"><div className="product-name">trinika<span>labs</span><span className="preview-badge">DRAFT TANPA ARAHAN VISUAL</span></div><div className="header-right"><span className="local-indicator">Lokal di browser</span><span className="open-source-label">OPEN SOURCE</span></div></header>
+      <div className="project-toolbar">
+        <div className="project-heading">
+          <div className="project-icon"><Icon name="layers" size={20} /></div>
+          <div>
+            <EditableField key={`${project.id}-${project.revision}-title`} label="Nama proyek" value={project.title} onCommit={controller.rename} onDraft={controller.markDraft} onFinish={controller.finishDraft} />
+            <p><span className={`save-dot ${snapshot.dirty ? "unsaved" : ""}`} />{snapshot.dirty ? "Perubahan belum disimpan" : "Tersimpan di browser"}<span className="toolbar-separator">/</span>Wiring dasar</p>
+          </div>
+        </div>
+        <div className="project-actions">
+          <button className="tool-button icon-only" aria-label="Undo" disabled={!snapshot.undoCount || isImporting} onClick={controller.undo}><Icon name="undo" /></button>
+          <button className="tool-button icon-only" aria-label="Redo" disabled={!snapshot.redoCount || isImporting} onClick={controller.redo}><Icon name="redo" /></button>
+          <span className="action-divider" />
+          <button className="tool-button" aria-label={isImporting ? "Membaca file proyek" : "Buka proyek"} disabled={isImporting} onClick={() => fileInput.current?.click()}><Icon name="folder" /><span>{isImporting ? "Membaca file…" : "Buka"}</span></button>
+          <button className="tool-button" aria-label="Ekspor proyek JSON" onClick={exportProject}><Icon name="download" /><span>Ekspor</span></button>
+          <button className="primary-button" onClick={() => controller.saveLocal(browserProjectStore)}><Icon name="save" /><span>Simpan lokal</span></button>
+        </div>
+      </div>
       <input ref={fileInput} type="file" accept=".json,application/json" className="visually-hidden" aria-label="Buka file proyek JSON" onChange={async (event) => {
         const imported = event.target.files?.[0]; event.target.value = "";
         if (!imported) return;
         if (imported.size > MAX_PROJECT_JSON_LENGTH * 4) return controller.notify("File proyek terlalu besar.", "error");
-        try { controller.importJson(await imported.text()); setFileIndex(0); } catch { controller.notify("File tidak dapat dibaca.", "error"); }
+        setIsImporting(true);
+        controller.notify("Membaca file proyek…");
+        try { controller.importJson(await imported.text()); setFileIndex(0); }
+        catch { controller.notify("File tidak dapat dibaca. Pilih file JSON lain atau gunakan cadangan.", "error"); }
+        finally { setIsImporting(false); }
       }} />
       <main className="workspace-grid">
         <aside className="catalog-panel"><div className="panel-heading"><div><span className="eyebrow">TOOLBOX</span><h2>Komponen</h2></div><span className="count-badge">{STARTER_CATALOG.length}</span></div><label className="search-field"><Icon name="search" size={16} /><input placeholder="Cari komponen…" aria-label="Cari komponen" value={search} onChange={(event) => setSearch(event.target.value)} /></label><div className="category-tabs" aria-label="Kategori komponen">{["Semua", "Board", "Komponen"].map((item) => <button key={item} aria-pressed={category === item} className={category === item ? "active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div><div className="catalog-list">{visibleParts.map((part) => <button key={part.definition.reference.id} className="catalog-card" onClick={() => controller.addPart(part.definition.reference)} aria-label={`Tambah ${part.definition.label}`}><span className={`catalog-thumbnail ${part.symbol}`}><svg viewBox={`-12 -12 ${part.width + 24} ${part.height + 24}`} aria-hidden="true"><PartSymbol symbol={part.symbol} /></svg></span><span className="catalog-card-info"><strong>{part.definition.label}</strong><span>{part.category === "Board" ? "Board generik" : part.symbol === "resistor" ? "220 Ω · dua terminal" : part.symbol === "led" ? "Output · dua terminal" : part.symbol === "button" ? "Input · dua terminal" : "5 kontak terhubung"}</span></span><span className="add-part"><Icon name="plus" size={15} /></span></button>)}{visibleParts.length === 0 && <p className="empty-message">Komponen tidak ditemukan. Coba kata lain.</p>}</div><div className="project-parts"><h3>Di rangkaian <span>{project.circuit.instances.length}</span></h3><div>{project.circuit.instances.map((instance) => <button key={instance.id} className={snapshot.selection?.id === instance.id ? "active" : ""} onClick={() => { controller.select({ kind: "instance", id: instance.id }); setInspectorTab("properties"); }}><span className="instance-marker" /><span>{String(instance.properties.label ?? partFor(instance).definition.label)}</span><code>{instance.id}</code></button>)}</div></div><div className="catalog-note"><span className="mini-icon"><Icon name="layers" size={17} /></span><strong>Dibangun untuk banyak board.</strong><p>Katalog awal memakai simbol generik. ESP, AVR, dan keluarga lain akan hadir melalui adapter terverifikasi.</p></div></aside>

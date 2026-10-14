@@ -92,7 +92,7 @@ export function createStarterProject(): ProjectDocument {
   const positions = [{ x: 95, y: 140 }, { x: 370, y: 174 }, { x: 655, y: 130 }, { x: 455, y: 375 }];
   return {
     ...project,
-    files: [{ path: "main.cpp", content: "// Trinika Labs — latihan wiring\n// Papan latihan ini belum memiliki compiler atau emulator.\n// Kode disimpan sebagai file proyek; belum dapat dijalankan.\n\nvoid setup() {\n  // Konfigurasi pin mengikuti board nyata yang akan dipilih nanti.\n}\n\nvoid loop() {\n  // Tulis eksperimenmu di sini.\n}\n" }],
+    files: [{ path: "main.cpp", content: "// Trinika Labs: latihan wiring\n// Papan latihan ini belum memiliki compiler atau emulator.\n// Kode disimpan sebagai file proyek; belum dapat dijalankan.\n\nvoid setup() {\n  // Konfigurasi pin mengikuti board nyata yang akan dipilih nanti.\n}\n\nvoid loop() {\n  // Tulis eksperimenmu di sini.\n}\n" }],
     dependencies: definitions.map(reference),
     circuit: {
       instances: definitions.map((name, index) => ({

@@ -33,8 +33,8 @@ export function CircuitCanvas({ controller, snapshot }: { controller: WorkspaceC
   };
 
   return <div className="canvas-area">
-    <div className="canvas-corner"><span className="live-dot" />WIRING WORKSPACE <span className="canvas-corner-detail">/ 2D</span></div>
-    {project.circuit.instances.length === 0 && <div className="canvas-empty"><h3>Tempat untuk ide pertamamu.</h3><p>Tambahkan komponen dari katalog di sebelah kiri.</p></div>}
+    <div className="canvas-corner">WIRING WORKSPACE <span className="canvas-corner-detail">/ 2D</span></div>
+    {project.circuit.instances.length === 0 && <div className="canvas-empty"><h3>Rangkaian masih kosong.</h3><p>Tambahkan komponen dari katalog.</p></div>}
     <svg ref={svgRef} className="circuit-svg" aria-label="Kanvas rangkaian. Pilih komponen atau pin; tombol panah memindahkan komponen." viewBox={`${(1000 - 1000 / zoom) / 2} ${(620 - 620 / zoom) / 2} ${1000 / zoom} ${620 / zoom}`}
       onPointerMove={(event) => {
         if (!dragRef.current) return;
@@ -56,12 +56,12 @@ export function CircuitCanvas({ controller, snapshot }: { controller: WorkspaceC
         const path = to.x >= from.x ? `M${from.x},${from.y} H${middle} V${to.y} H${to.x}` : `M${from.x},${from.y} V${Math.max(from.y, to.y) + 80} H${to.x + 25} V${to.y} H${to.x}`;
         const selected = snapshot.selection?.kind === "wire" && snapshot.selection.id === wire.id;
         return <g key={wire.id} className={`wire-path ${selected ? "selected" : ""}`} role="button" tabIndex={0} aria-label={`Pilih kabel ${wire.id}`} onClick={() => controller.select({ kind: "wire", id: wire.id })} onKeyDown={(event) => { if (["Enter", " "].includes(event.key)) { event.preventDefault(); controller.select({ kind: "wire", id: wire.id }); } }}>
-          <title>{wire.id} — klik untuk memilih dan menghapus</title>
+          <title>{`${wire.id}: klik untuk memilih dan menghapus`}</title>
           <path d={path} fill="none" stroke="transparent" strokeWidth="18" />
           <path className="wire-visible" d={path} fill="none" stroke={selected ? "#f1a45a" : ["#58a88b", "#58a88b", "#717e87", "#b5945c"][index % 4]} strokeWidth={selected ? 4 : 3} strokeLinejoin="round" />
         </g>;
       })}
-      {project.circuit.junctions.map((junction) => { const point = pointFor(project, { kind: "junction", junctionId: junction.id }); return <circle key={junction.id} cx={point.x} cy={point.y} r="5" fill="#596a5d"><title>Junction {junction.id}</title></circle>; })}
+      {project.circuit.junctions.map((junction) => { const point = pointFor(project, { kind: "junction", junctionId: junction.id }); return <circle key={junction.id} cx={point.x} cy={point.y} r="5" fill="#596a5d"><title>{`Junction ${junction.id}`}</title></circle>; })}
       {project.circuit.instances.map((instance) => {
         const part = partFor(instance); const position = positionFor(project, instance);
         const selected = snapshot.selection?.kind === "instance" && snapshot.selection.id === instance.id;
@@ -78,7 +78,7 @@ export function CircuitCanvas({ controller, snapshot }: { controller: WorkspaceC
           {part.pins.map((pin) => {
             const endpoint = { kind: "terminal" as const, instanceId: instance.id, terminalId: pin.id };
             const active = snapshot.pendingTerminal && endpointKey(snapshot.pendingTerminal) === endpointKey(endpoint);
-            return <circle key={pin.id} className={`terminal ${active ? "active" : ""}`} cx={pin.x} cy={pin.y} r="6" role="button" tabIndex={0} aria-label={`Connect ${instance.id} ${pin.id}`} onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); controller.chooseTerminal(endpoint); }} onKeyDown={(event) => { if (["Enter", " "].includes(event.key)) { event.preventDefault(); controller.chooseTerminal(endpoint); } }}><title>{instance.id} · {part.definition.terminals.find((terminal) => terminal.id === pin.id)?.label}</title></circle>;
+            return <circle key={pin.id} className={`terminal ${active ? "active" : ""}`} cx={pin.x} cy={pin.y} r="6" role="button" tabIndex={0} aria-label={`Hubungkan ${instance.id} ${pin.id}`} onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); controller.chooseTerminal(endpoint); }} onKeyDown={(event) => { if (["Enter", " "].includes(event.key)) { event.preventDefault(); controller.chooseTerminal(endpoint); } }}><title>{`${instance.id}: ${part.definition.terminals.find((terminal) => terminal.id === pin.id)?.label ?? pin.id}`}</title></circle>;
           })}
         </g>;
       })}

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "skipLibCheck": true,
+    "rootDir": "src/core",
+    "outDir": ".test-build",
+    "types": [],
+    "lib": ["ES2020"],
+    "noEmitOnError": true
+  },
+  "include": ["src/core/**/*.ts"]
+}

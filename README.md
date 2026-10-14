@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trinika Labs
 
-## Getting Started
+Platform belajar dan pengembangan IoT open source lintas board, dengan arah pengembangan workspace 2D/3D, coding, simulasi, dan koneksi perangkat asli.
 
-First, run the development server:
+## Status
 
-```bash
+Proyek berada pada tahap fondasi. Domain sudah memodelkan proyek, terminal, koneksi, junction, dan topologi rangkaian yang independen dari UI. Validasi saat ini bersifat struktural; belum menghitung tegangan/arus atau menjalankan firmware. Halaman web masih halaman starter Next.js.
+
+Baca [rancangan arsitektur](docs/ARCHITECTURE.md) untuk keputusan, batas modul, roadmap, dan status implementasi. Dukungan board nyata belum tersedia. Kebijakan lisensi distribusi perlu ditetapkan sebelum rilis publik.
+
+## Menjalankan proyek
+
+Gunakan Node.js 20.19 atau lebih baru yang kompatibel dengan paket Next.js terpasang.
+
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pemeriksaan
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+npm test
+npm run typecheck
+npm run lint
+```
 
-## Learn More
+Tes mengompilasi `src/core/` ke `.test-build/` yang diabaikan Git, lalu menjalankan Node.js test runner. Fixture sintetis mencakup net, junction, breadboard, identitas terminal, layout independen, dan command koneksi atomik. Tidak membutuhkan simulator atau layanan eksternal.
 
-To learn more about Next.js, take a look at the following resources:
+## Struktur saat ini
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```text
+app/                        Routing dan halaman Next.js
+src/core/domain/            Dokumen proyek dan analisis topologi
+src/core/application/       Command/use case koneksi
+tests/                      Pengujian domain dan use case
+docs/ARCHITECTURE.md         Acuan pengembangan
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Sebelum mengubah kode Next.js, ikuti `AGENTS.md` dan baca panduan terkait dalam `node_modules/next/dist/docs/`.

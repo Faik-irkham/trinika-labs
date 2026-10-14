@@ -84,7 +84,7 @@ export interface ProjectDocument {
   dependencies: readonly DefinitionReference[];
 }
 
-/** Initial in-memory document. Import validation/migrations are separate work. */
+/** Initial in-memory document. JSON imports go through the project-format boundary. */
 export function createProject(id: string, title: string): ProjectDocument {
   if (!id.trim() || !title.trim()) {
     throw new Error("Project ID and title must not be empty.");
